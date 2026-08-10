@@ -1,0 +1,7 @@
+# Safe default: fill and audit the form, but do not click the final submit button.
+AUTOFILL_ENABLED=0
+
+# Optional: set your own private ntfy topic locally. Leave empty to disable alerts.
+NTFY_TOPIC=
+# Optional second topic for data-free alerts. Leave empty to disable it.
+SHARED_TOPIC=

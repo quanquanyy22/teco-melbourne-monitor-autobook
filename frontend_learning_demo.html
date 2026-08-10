@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Async Form Automation Demo</title>
+  <style>
+    body { font: 16px/1.45 system-ui, sans-serif; max-width: 680px; margin: 40px auto; padding: 0 20px; }
+    form { display: grid; gap: 16px; }
+    label { display: grid; gap: 6px; font-weight: 600; }
+    input, select, button { font: inherit; padding: 10px; }
+    .check { display: flex; align-items: center; gap: 8px; }
+    #status { padding: 12px; background: #f2f4f7; border-radius: 8px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Async form automation demo</h1>
+  <p>The form mounts after 900 ms to imitate a client-rendered application.</p>
+  <div id="app" aria-live="polite">Loading form…</div>
+  <p id="status">Waiting for the form.</p>
+
+  <script>
+    const app = document.querySelector('#app');
+    const status = document.querySelector('#status');
+
+    // Simulates a component framework mounting controls after asynchronous work.
+    setTimeout(() => {
+      app.innerHTML = `
+        <form id="demo-form">
+          <label for="full-name">Full name
+            <input id="full-name" name="fullName" required>
+          </label>
+          <label for="email">Email
+            <input id="email" name="email" type="email" required>
+          </label>
+          <label for="arithmetic">What is 12 + 7?
+            <select id="arithmetic" name="arithmetic" required>
+              <option value="">Choose…</option><option>17</option><option>19</option><option>21</option>
+            </select>
+          </label>
+          <label for="city">Choose an Australian city
+            <select id="city" name="city" required>
+              <option value="">Choose…</option><option>Oslo</option><option>Brisbane</option><option>Boston</option>
+            </select>
+          </label>
+          <label class="check" for="declaration">
+            <input id="declaration" name="declaration" type="checkbox" required>
+            I confirm these demo values are correct
+          </label>
+          <button type="submit">Submit demo</button>
+        </form>`;
+
+      document.querySelector('#demo-form').addEventListener('submit', event => {
+        event.preventDefault();
+        const data = Object.fromEntries(new FormData(event.currentTarget));
+        data.declaration = document.querySelector('#declaration').checked;
+        status.textContent = `Submitted locally:\n${JSON.stringify(data, null, 2)}`;
+      });
+      status.textContent = 'Form ready.';
+    }, 900);
+  </script>
+</body>
+</html>
